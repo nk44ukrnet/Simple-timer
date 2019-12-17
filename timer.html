@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<p id="timerContainer">
+    Days: <span id="days">12</span> /
+    Hours: <span id="hours">24</span> /
+    Minutes: <span id="minutes">00</span> /
+    Seconds: <span id="seconds">12</span>
+</p>
+
+
+<script>
+let deadline = '2019-11-20';
+
+function getTimeRemeaning(endtime) {
+let t = Date.parse(endtime) - Date.parse(new Date()),
+    secs = Math.floor((t/1000) % 60),
+    mins = Math.floor((t/1000/60) % 60),
+   /* days = Math.floor (((t/(1000*60*60)*24) %31);*/
+   hours = Math.floor((t/1000/60/60) % 24),
+    days = Math.floor((t/(1000*60*60*24)));
+
+return {
+    'total': t,
+    'hours': hours,
+    'mins': mins,
+    'secs' : secs,
+    'days' : days
+};
+
+}
+
+function setClock(id, endtime) {
+let time = document.getElementById(id),
+    hours = timerContainer.querySelector('#hours'),
+    mins = timerContainer.querySelector('#minutes'),
+    secs = timerContainer.querySelector('#seconds'),
+    days = timerContainer.querySelector('#days'),
+    timeInterval = setInterval(updateClock, 1000);
+
+    function updateClock() {
+        let t = getTimeRemeaning(endtime);
+
+        if(t.days < 10) {
+            days.textContent = '0' + t.days;
+        } else {
+            days.textContent = t.days;
+        }
+
+        if (t.days <= 0) {
+            days.textContent = '00';
+        }
+
+        if(t.hours < 10) {
+            hours.textContent = '0' + t.hours;
+        }  else {
+            hours.textContent = t.hours;
+        }
+
+        if(t.hours <= 0) {
+            hours.textContent = '00';
+        }
+
+        if (t.mins < 10) {
+        mins.textContent = '0' +t.mins;
+        }  else {
+        mins.textContent = t.mins;
+        }
+
+        if (t.mins <= 0) {
+            mins.textContent = '00';
+        }
+
+        if (t.secs < 10 && t.secs !== (t.secs <= 0)) {
+            secs.textContent = '0' +t.secs;
+        }  else {
+            secs.textContent = t.secs;
+        }
+
+        if(t.secs <= 0) {
+            secs.textContent = '00';
+        }
+
+        if(t.total <= 0) {
+            clearInterval(timeInterval)
+        }
+            }
+}
+
+setClock('timer', deadline);
+
+</script>
+
+</body>
+</html>
